@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Consumption Tracker</title>
+    <link rel="icon" href="favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 16px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            width: 400px;
+            text-align: center;
+            position: relative;
+        }
+        h1,h2 {
+            margin-top: 0;
+            color: #007BFF;
+        }
+        .glass-container {
+            position: relative;
+            display: inline-block;
+            width: 300px;
+            height: 300px;
+            background: url('glass.jpg') no-repeat center center;
+            background-size: contain;
+        }
+        .glass-number {
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 36px;
+            font-weight: bold;
+            color: #007BFF;
+        }
+        .button-group {
+            margin-top: 20px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .reset-button {
+            background-color: #dc3545;
+            margin-top: 10px;
+        }
+        .reset-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Water Tracker</h1>
+        <h2>(Glasses of Water)</h2>
+        <div class="glass-container">
+            <div id="glassNumber" class="glass-number">0</div>
+        </div>
+        <div class="button-group">
+            <button onclick="changeGlassCount(-0.5)">- 1/2</button>
+            <button onclick="changeGlassCount(-1)">-1</button>
+            <button onclick="changeGlassCount(1)">+1</button>
+            <button onclick="changeGlassCount(0.5)">+ 1/2</button>
+        </div>
+        <button class="reset-button" onclick="resetGlassCount()">Reset</button>
+    </div>
+
+    <script>
+        const glassCountKey = 'glassCount';
+        
+        // Load the glass count from local storage
+        function loadGlassCount() {
+            const storedCount = localStorage.getItem(glassCountKey);
+            return storedCount ? parseFloat(storedCount) : 0;
+        }
+
+        // Save the glass count to local storage
+        function saveGlassCount(count) {
+            localStorage.setItem(glassCountKey, count);
+        }
+
+        // Update the glass count and display
+        function updateGlassCount(count) {
+            document.getElementById('glassNumber').innerText = count.toFixed(1);
+            saveGlassCount(count);
+        }
+
+        let glassCount = loadGlassCount();
+        updateGlassCount(glassCount);
+
+        function changeGlassCount(amount) {
+            if (glassCount + amount >= 0) {
+                glassCount += amount;
+                updateGlassCount(glassCount);
+            } else {
+                alert('Cannot have a negative number of glasses.');
+            }
+        }
+
+        function resetGlassCount() {
+            glassCount = 0;
+            updateGlassCount(glassCount);
+        }
+    </script>
+</body>
+</html>
